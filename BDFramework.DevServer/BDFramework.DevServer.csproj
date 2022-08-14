@@ -13,11 +13,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BDFramework.DevServer.ShareData\BDFramework.DevServer.ShareData.csproj" />
-      <ProjectReference Include="..\BDFramework.DevServer.ShareData\BDFramework.DevServer.ShareData\BDFramework.DevServer.ShareData.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Controllers\Utils" />
     </ItemGroup>
 
 </Project>

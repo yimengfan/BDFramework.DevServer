@@ -1,8 +1,9 @@
 ﻿using BDFramework.AssetBundleCacheServer.Result;
 using BDFramework.DevServer.AssetbundleCacheController;
+using BDFramework.Service;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BDFramework.DevServer.Controllers.AssetbundleCache;
+namespace BDFramework.DevServer.Controllers;
 
 /// <summary>
 /// 这里是AssetBundle服务器的辅助开发
@@ -12,11 +13,11 @@ namespace BDFramework.DevServer.Controllers.AssetbundleCache;
 [Route("[controller]")]
 public class AssetbundleCacheController : ControllerBase
 {
-    readonly private IHostEnvironment hostEnvironment;
+    private AssetBundleIOService assetBundleIoService;
 
-    public AssetbundleCacheController(IHostEnvironment hostEnvironment)
+    public AssetbundleCacheController(AssetBundleIOService assetBundleIoService)
     {
-        this.hostEnvironment = hostEnvironment;
+        this.assetBundleIoService = assetBundleIoService;
     }
 
     /// <summary>
@@ -28,17 +29,7 @@ public class AssetbundleCacheController : ControllerBase
     {
         return "Connect assetbundle cache server success!";
     }
-
-    /// <summary>
-    /// 获取项目AssetBundle列表
-    /// </summary>
-    /// <returns></returns>
-    public IActionResult GetProjectAssetbundleList(string projectName, string unityVersion, string platform)
-    {
-        return null;
-    }
-
-
+    
     /// <summary>
     ///  上传
     /// </summary>
@@ -51,31 +42,23 @@ public class AssetbundleCacheController : ControllerBase
     [HttpPost("Upload")]
     public IActionResult Upload([FromForm] Data.UploadAssetbundleData uploadData)
     {
-        var filePath = Path.Combine(uploadData.ProjectName, uploadData.UnityVersion, uploadData.Platform, uploadData.Hash);
-        var savePath = Path.Combine(this.hostEnvironment.ContentRootPath, "bin/AssetbundleCache", filePath);
-        //保存
-        var dir = Path.GetDirectoryName(savePath);
-        if (!Directory.Exists(dir))
-        {
-            Directory.CreateDirectory(dir);
-        }
-
         //
         try
         {
-            if (!System.IO.File.Exists(savePath))
-            {
-                using (var fileStream = System.IO.File.Create(savePath))
-                {
-                    uploadData.AssetbundleFile.CopyTo(fileStream);
-                }
+            MemoryStream ms = new MemoryStream();
+            uploadData.AssetbundleFile.CopyTo(ms);
+            var fileBytes = ms.ToArray();
 
-                Console.WriteLine("[缓存ab]: 写入成功 - " + savePath);
-            }
-            else
+            //校验hash
+            var murmurHash = FileHelper.GetMurmurHash3(fileBytes);
+            if (!murmurHash.Equals(uploadData.Hash))
             {
-                Console.WriteLine("[缓存ab]:");
+                return new Fail("Hash校验不一致");
             }
+
+            //写入本地
+            var filePath = Path.Combine(uploadData.ProjectName, uploadData.UnityVersion, uploadData.Platform, uploadData.FileName);
+            this.assetBundleIoService.SaveFile(filePath, fileBytes);
 
 
             return new Success("成功");
@@ -87,17 +70,26 @@ public class AssetbundleCacheController : ControllerBase
     }
 
     /// <summary>
-    ///  上传
+    ///  下载AssetBundle
     /// </summary>
     /// <param name="projectName"></param>
     /// <param name="unityVersion"></param>
     /// <param name="platform"></param>
-    /// <param name="hash"></param>
-    /// <param name="assetbundleFile"></param>
+    /// <param name="FileName"> 文件名：使用原资产颗粒度包含资源+按guid排序+byte拼接+取murmurhash3 生成</param>
     /// <returns></returns>
-    [HttpGet]
-    public IActionResult Download(string hash)
+    [HttpGet("Download")]
+    public IActionResult Download(string ProjectName, string UnityVersion, string Platform, string FileName)
     {
-        return new JsonResult(null);
+        var contentType = "application/octet-stream";
+        var filePath = Path.Combine(ProjectName, UnityVersion, Platform, FileName);
+        var bytes = assetBundleIoService.GetFile(filePath);
+        if (bytes != null)
+        {
+            return new FileContentResult(bytes,contentType);
+        }
+        
+        return new FileContentResult(new byte[] { }, contentType);
+
+
     }
 }

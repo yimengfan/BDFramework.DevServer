@@ -1,4 +1,5 @@
 using System.Net;
+using BDFramework.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
-
 //使用kestrel内核
 builder.WebHost.UseKestrel(so =>
 {
@@ -19,8 +19,11 @@ builder.WebHost.UseKestrel(so =>
     so.ListenAnyIP( PORT);
 });
 
+//AssetBundleIO 服务
+builder.Services.AddSingleton<AssetBundleIOService>();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

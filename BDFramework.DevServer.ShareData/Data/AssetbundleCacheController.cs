@@ -39,4 +39,29 @@ public class Data
     }
     
     
+    /// <summary>
+    /// 下载ab文件的数据
+    /// </summary>
+    public class DownloadAssetbundleData
+    {
+        /// <summary>
+        /// 项目名
+        /// </summary>
+        public string ProjectName { get; set; }
+        /// <summary>
+        /// unity版本
+        /// </summary>
+        public string UnityVersion { get; set; }
+        /// <summary>
+        /// 平台
+        /// </summary>
+        public string Platform { get; set; }
+        
+        /// <summary>
+        /// 文件名：使用原资产颗粒度包含资源+按guid排序+byte拼接+取murmurhash3 生成
+        /// </summary>
+        public string FileName { get; set; }
+        
+    }
+    
 }

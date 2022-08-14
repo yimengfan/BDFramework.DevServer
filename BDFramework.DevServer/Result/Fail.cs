@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace BDFramework.AssetBundleCacheServer.Result;
 
-[DefaultStatusCode(601)]
-public class Error : ObjectResult
+[DefaultStatusCode(600)]
+public class Fail : ObjectResult
 {
-    public Error(object? value) : base(value)
+    public Fail(object? value) : base(value)
     {
         
     }
