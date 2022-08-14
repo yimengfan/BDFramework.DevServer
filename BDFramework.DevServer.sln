@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDFramework.DevServer", "BDFramework.DevServer\BDFramework.DevServer.csproj", "{6EB9B8FB-F85E-4661-B782-530E6067B086}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BDFramework.DevServer.ShareData", "BDFramework.DevServer.ShareData\BDFramework.DevServer.ShareData.csproj", "{0077AF6E-D1E0-49DA-B242-CD79C64EEE45}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EB9B8FB-F85E-4661-B782-530E6067B086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB9B8FB-F85E-4661-B782-530E6067B086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB9B8FB-F85E-4661-B782-530E6067B086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB9B8FB-F85E-4661-B782-530E6067B086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0077AF6E-D1E0-49DA-B242-CD79C64EEE45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0077AF6E-D1E0-49DA-B242-CD79C64EEE45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0077AF6E-D1E0-49DA-B242-CD79C64EEE45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0077AF6E-D1E0-49DA-B242-CD79C64EEE45}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

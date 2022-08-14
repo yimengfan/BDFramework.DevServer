@@ -50,3 +50,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+/.idea
+/BDFramework.DevServer/bin
+/BDFramework.DevServer/obj
+/BDFramework.DevServer.ShareData/.idea
+/BDFramework.DevServer.ShareData/obj
+/BDFramework.DevServer.ShareData/bin
